@@ -18,18 +18,19 @@ const routes = [
   {
     name: "auth",
     path: "/login",
-    meta: { notNeedsAuth: true},
+    meta: { needsAuth: false},
     component: Auth
   },
   {
     name: "profile",
     path: "/profile",
-    component: UserProfile
+    meta: { needsAuth: true},
+    component: UserProfile,
   },
   {
     name: "registration",
     path: "/registration",
-    meta: { notNeedsAuth: true},
+    meta: { needsAuth: false},
     component: Reg
   }
 ];
@@ -40,21 +41,23 @@ const router = createRouter({
 });
 
 router.beforeEach(function(to, _from, next) {
+  const token = localStorage.getItem("token");
   if (to.meta.needsAuth) {
-    if (localStorage.getItem("token") === null) {
+    if (!token) {
       console.log("Needs auth!");
       next({ name: "auth" });
+    } else {
+      next()
     }
-    next();
   }
-  if (to.meta.notNeedsAuth) {
-    if (localStorage.getItem("token") !== null) {
+  if (!to.meta.needsAuth) {
+    if (token) {
       console.log("Not Needs auth!");
       next({ name: "profile" });
+    } else {
+      next()
     }
-    next();
   }
-  // next();
 });
 
 export default router;

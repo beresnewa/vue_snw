@@ -6,7 +6,7 @@
             </div>
             <div class="wrapperInfo">
                 <div class="wrap">
-                    <div class="userName"> beresnewa.e </div>
+                    <div class="userName"> {{ user.name }} </div>
                     <button class="buttonEdit">Редактировать профиль</button>
                 </div>
                 <div class="buttons">
@@ -30,9 +30,21 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
-    props: ["auth"],  
+    data() {
+        return {
+            
+        }
+    },
+    
+    computed: {
+        ...mapGetters("authState", ["user"]),
+    },
+
 }
+
 </script>
 
 <style scoped>

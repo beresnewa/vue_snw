@@ -2,19 +2,12 @@
   <header>
     <nav>
       <ul>
-        <!-- <li v-if="auth">
-          <router-link to="/teams">Teams</router-link>
-        </li> -->
         <li v-if="auth">
           <router-link to="/profile">Profile</router-link>
-        </li>
-        <li v-else>
-          <router-link to="/registration">Registration</router-link>
-        </li>
-        <li v-if="auth">
           <a @click="logout()" to="/login">Logout</a>
         </li>
         <li v-else>
+          <router-link to="/registration">Registration</router-link>
           <router-link to="/login">Login</router-link>
         </li>
       </ul>

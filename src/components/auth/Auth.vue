@@ -5,7 +5,7 @@
         <input required v-model="loginAuth" type="text" name="login" placeholder="login/email">
         <i class="icon-user icon-large"></i>
     </p>
-        <p class="field">
+    <p class="field">
         <input required v-model="password" type="password" name="password" placeholder="password">
         <i class="icon-lock icon-large"></i>
     </p>      

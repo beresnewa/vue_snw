@@ -7,20 +7,34 @@ export default {
         }
     },
     mutations: {
-      login(state) {
-        state.auth = true
+      login(state, userFromRes) { 
+        const token = localStorage.getItem('token')
+        if(token) {
+          state.auth = true
+          state.user = userFromRes
+        }
       },
       logout(state) {
-        state.auth = false;
+        const token = localStorage.getItem('token')
+        if(!token) {
+          state.auth = false
+        }
+        console.log(state.auth)
       },
       reg(state) {
-        state.auth = true
+        const token = localStorage.getItem('token')
+        if(token) {
+          state.auth = true
+        }
       }
     },
 
     getters: {
       auth(state) {
         return state.auth
+      },
+      user(state) {
+        return state.user
       }
     },
     
@@ -28,8 +42,10 @@ export default {
       async login(context, payload) {
         const response = await this.axios.post("users/login", payload) 
         const token = response.data.token
+        const userFromRes = response.data.user
+      
         localStorage.setItem('token', token)
-        context.commit("login", payload)
+        context.commit('login', userFromRes)
       },
 
       logout(context) {
