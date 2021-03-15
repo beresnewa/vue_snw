@@ -22,9 +22,8 @@ export default {
     
     data() {
         return {
-            loginAuth: '',
-            password: '',
-            
+            login: '',
+            password: '',  
         };
     },
     computed:{

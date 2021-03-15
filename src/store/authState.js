@@ -42,8 +42,8 @@ export default {
         
         return state.user
       },
-      isAuthenticated: state => !!state.token,
-      authStatus: state => state.status,
+      // isAuthenticated: state => !!state.token,
+      // authStatus: state => state.status,
     },
     
     actions: {
