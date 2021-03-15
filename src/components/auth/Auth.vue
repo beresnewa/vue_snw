@@ -22,11 +22,11 @@ export default {
     
     data() {
         return {
-            login: '',
+            loginAuth: '',
             password: '',  
         };
     },
-    computed:{
+    methods:{
         ...mapActions("authState", ["login"]),
     },
     // created(){
