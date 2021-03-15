@@ -10,7 +10,10 @@ import SettingAxios from './plugins/axios';
 const app = createApp(App);
 SettingAxios(store)
 
+
 app
-.use(store)
+
+
 .use(router)
+.use(store)
 .mount('#app');

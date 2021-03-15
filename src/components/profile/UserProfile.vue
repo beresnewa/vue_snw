@@ -33,16 +33,9 @@
 import { mapGetters } from 'vuex';
 
 export default {
-    data() {
-        return {
-            
-        }
-    },
-    
     computed: {
-        ...mapGetters("authState", ["user"]),
-    },
-
+        ...mapGetters("authState", ["user"]),  
+    }
 }
 
 </script>

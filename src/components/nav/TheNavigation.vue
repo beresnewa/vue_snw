@@ -6,7 +6,7 @@
           <router-link to="/profile">Profile</router-link>
           <a @click="logout()" to="/login">Logout</a>
         </li>
-        <li v-else>
+        <li v-else> 
           <router-link to="/registration">Registration</router-link>
           <router-link to="/login">Login</router-link>
         </li>
@@ -19,12 +19,11 @@
 import { mapGetters, mapActions } from 'vuex'; 
 
 export default {
-  
   computed: {
     ...mapGetters("authState", ["auth"]),
   },
   methods: {
-    ...mapActions("authState", ["logout"])
+    ...mapActions("authState", ["logout", "login"]),
   }
 };
 </script>

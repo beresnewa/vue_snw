@@ -1,6 +1,5 @@
 <template>
-  <div v-if="auth"><user-profile></user-profile></div>
-  <form v-else @submit.prevent="reg({ name, login, password })" class="form-1">
+  <form @submit.prevent="reg({ name, login, password })" class="form-1">
     <p class="field">
       <input required v-model="name" type="text" name="name" placeholder="name">
       <i class="icon-user icon-large"></i>
@@ -20,23 +19,15 @@
 </template>
 
 <script>
-  import UserProfile from '../profile/UserProfile';
-  import { mapActions, mapGetters } from 'vuex';
+  import { mapActions } from 'vuex';
 
   export default {
-    components: {
-        UserProfile
-    },
     data(){
       return {
         name : '',
         login : '',
         password : '',
       }
-    },
-    computed: {
-      ...mapGetters("authState", ["auth"]),
-        
     },
     methods: {
       ...mapActions("authState", ["reg"]),

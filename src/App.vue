@@ -1,5 +1,4 @@
 <template>
-  <!-- <the-navigation :auth="auth"></the-navigation> -->
   <the-navigation></the-navigation>
   <main>
     <router-view></router-view>
@@ -8,25 +7,18 @@
 
 <script>
 import TheNavigation from "./components/nav/TheNavigation.vue";
-// import { mapGetters } from 'vuex'; 
+
+
+import { mapGetters } from 'vuex'; 
+
 
 export default {
   components: {
-    TheNavigation
-  },
-  data() {
-    return {
-      activePage: "userProfile",
-    };
+    TheNavigation,
   },
   computed: {
-        // ...mapGetters("authState", ["auth"]),
+        ...mapGetters("authState", ["auth"]),
   },
-  methods: {
-    setActivePage(page) {
-      this.activePage = page;
-    },
-  }
 };
 </script>
 
