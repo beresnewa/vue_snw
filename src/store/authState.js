@@ -4,26 +4,26 @@ export default {
     namespaced: true,
     state() {
         return {
-            token: localStorage.getItem('token') || '',
+            token: '',
             auth: false,
             user: {},
             status: ''
         }
     },
     mutations: {
-      login(state, userFromRes) { 
-        if(state.token) {
+      login(state, { token, userData }) { 
+          state.token = token
           state.auth = true
-          state.user = userFromRes
-          router.push('/profile')
+          state.user = userData
           console.log(state.user)
-        }
+          router.push('/profile')
+          
       },
       logout(state) {
-        if(!state.token) {
+          state.token = ''
           state.auth = false
           router.push('/login')
-        }
+        
       },
       reg(state, userFromRes) {
         if(state.token) {
@@ -39,11 +39,11 @@ export default {
         return state.auth
       },
       user(state) {
-        
         return state.user
       },
-      // isAuthenticated: state => !!state.token,
-      // authStatus: state => state.status,
+      token (state) {
+        return state.token
+      }
     },
     
     actions: {
@@ -51,12 +51,12 @@ export default {
         try {
           const response = await this.axios.post("users/login", payload)
           const token = response.data.token
-          const userFromRes = response.data.user 
-    
+          const userData = JSON.stringify(response.data.user)
+          
           localStorage.setItem('token', token)
-          // this.axios.defaults.headers.common['Authorization'] = token
+          localStorage.setItem('user', userData)
 
-          context.commit('login', userFromRes)
+          context.commit('login', { token, userData } )
 
         } catch(error) {
           alert(`неверный пароль ${error}`)
@@ -65,7 +65,7 @@ export default {
 
       logout(context) {
         localStorage.removeItem('token')
-        // delete this.axios.defaults.headers.common['Authorization']
+        localStorage.removeItem('user')
         context.commit("logout")
       },
 
@@ -75,9 +75,15 @@ export default {
         const userFromRes = response.data.user
 
         localStorage.setItem('token', token)
-
-
         context.commit("reg", userFromRes)
+      },
+
+      autologin(context) {
+        const token = localStorage.getItem('token')
+        const userData = JSON.parse(localStorage.getItem('user'))
+        
+        context.commit('login', { token, userData })
       }
+
     }
 }

@@ -46,24 +46,24 @@ const router = createRouter({
 });
 
 
-router.beforeEach(function(to, _from, next) {
-  const token = localStorage.getItem("token");
-  if (to.meta.needsAuth) {
-    if (!token) {
-      console.log("Needs auth!");
-      next({ name: "auth" });
-    } else {
-      next()
-    }
-  }
-  if (!to.meta.needsAuth) {
-    if (token) {
-      console.log("Not Needs auth!");
-      next({ name: "profile" });
-    } else {
-      next()
-    }
-  }
-})
+// router.beforeEach(function(to, _from, next) {
+//   const token = localStorage.getItem("token");
+//   if (to.meta.needsAuth) {
+//     if (!token) {
+//       console.log("Needs auth!");
+//       next({ name: "auth" });
+//     } else {
+//       next()
+//     }
+//   }
+//   if (!to.meta.needsAuth) {
+//     if (token) {
+//       console.log("Not Needs auth!");
+//       next({ name: "profile" });
+//     } else {
+//       next()
+//     }
+//   }
+// })
 
 export default router;

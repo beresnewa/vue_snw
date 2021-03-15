@@ -9,7 +9,7 @@
 import TheNavigation from "./components/nav/TheNavigation.vue";
 
 
-import { mapGetters } from 'vuex'; 
+import { mapActions, mapGetters } from 'vuex'; 
 
 
 export default {
@@ -17,8 +17,14 @@ export default {
     TheNavigation,
   },
   computed: {
-        ...mapGetters("authState", ["auth"]),
+    ...mapGetters("authState", ["auth"]),
   },
+  methods: {
+    ...mapActions("authState", ["autologin"])
+  },
+  created() {
+    this.autologin()
+  }
 };
 </script>
 

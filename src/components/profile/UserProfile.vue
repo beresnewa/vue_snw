@@ -6,7 +6,7 @@
             </div>
             <div class="wrapperInfo">
                 <div class="wrap">
-                    <div class="userName"> {{ user.name }} </div>
+                    <div class="userName">  </div>
                     <button class="buttonEdit">Редактировать профиль</button>
                 </div>
                 <div class="buttons">
