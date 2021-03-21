@@ -29,12 +29,6 @@ export default {
     methods:{
         ...mapActions("authState", ["login"]),
     },
-    // created(){
-    //     this.login()
-
-        
-    // }
-
 }   
 
 </script>

@@ -1,5 +1,4 @@
 import axios from 'axios';
-// import authState from '../store/authState';
 
 function setIterceptors(store) {
     axios.defaults.baseURL = "http://localhost:3000/"

@@ -2,14 +2,14 @@
   <div class="modalWrap">
     <div class="modal">
       <div class="modal-header">
-        <h3 class="modal-title">Подписчики</h3>
-        <button class="close" @click="closeModalFollowers()">X</button>
+        <h3 class="modal-title">Подписки</h3>
+        <button class="close" @click="closeModalSubscriptions()">X</button>
       </div>
-      <div v-for="(follower, index) in followers"
-        :key="follower._id"
+      <div v-for="(subscription, index) in subscriptions"
+        :key="subscription._id"
         :id="index"
         class="modal-body">
-        {{ follower.name }}    
+        {{ subscription.name }}    
       </div>
     </div>
   </div>
@@ -18,10 +18,10 @@
 import { mapGetters, mapActions } from 'vuex';
 export default {
   computed: {
-    ...mapGetters("usersState",["followers"]),   
+    ...mapGetters("usersState", ["subscriptions"]),   
   },
   methods: {
-    ...mapActions("usersState", ["closeModalFollowers", "getFollowers"])
+    ...mapActions("usersState", ["closeModalSubscriptions", "getFollowers"])
   },
   created() {
     this.getFollowers()

@@ -4,42 +4,33 @@ export default {
     namespaced: true,
     state() {
         return {
-            token: '',
-            auth: false,
-            user: {},
-            status: ''
+          token: '',
+          auth: false,
+          status: ''
         }
     },
     mutations: {
-      login(state, { token, userData }) { 
+      login(state, token) { 
           state.token = token
           state.auth = true
-          state.user = userData
-          console.log(state.user)
-          router.push('/profile')
-          
+          router.push('/profile') 
       },
       logout(state) {
-          state.token = ''
-          state.auth = false
-          router.push('/login')
+        state.token = ''
+        state.auth = false
+        router.push('/login')
         
       },
-      reg(state, userFromRes) {
-        if(state.token) {
-          state.auth = true
-          state.user = userFromRes
-          router.push('/profile')
-        }
+      reg(state, token) { 
+        state.token = token
+        state.auth = true
+        router.push('/profile')
       }
     },
 
     getters: {
       auth(state) {
         return state.auth
-      },
-      user(state) {
-        return state.user
       },
       token (state) {
         return state.token
@@ -51,12 +42,14 @@ export default {
         try {
           const response = await this.axios.post("users/login", payload)
           const token = response.data.token
-          const userData = JSON.stringify(response.data.user)
+          const userData = response.data.user
+          const userString = JSON.stringify(response.data.user)
           
           localStorage.setItem('token', token)
-          localStorage.setItem('user', userData)
+          localStorage.setItem('user', userString)
 
-          context.commit('login', { token, userData } )
+          context.commit('login', token )
+          context.commit('userUpdateByLogin', userData, { root: true })
 
         } catch(error) {
           alert(`неверный пароль ${error}`)
@@ -69,20 +62,36 @@ export default {
         context.commit("logout")
       },
 
-      async reg(context, payload) {    
-        const response = await this.axios.post("users/registration", payload)
-        const token = response.data.token
-        const userFromRes = response.data.user
+      async reg(context, payload) {
+        try {
+          const response = await this.axios.post("users/registration", payload)
+          const token = response.data.token
+          const userData = response.data.user
+          const userString = JSON.stringify(response.data.user)
 
-        localStorage.setItem('token', token)
-        context.commit("reg", userFromRes)
+          localStorage.setItem('token', token)
+          localStorage.setItem('user', userString)
+
+          context.commit('reg', token)
+          context.commit('userUpdateByReg', userData, { root: true })
+
+        } catch(error) {
+          alert(`user already exists ${error}`)
+        }    
+        
       },
 
       autologin(context) {
         const token = localStorage.getItem('token')
+        if(token === null) {
+          return 
+        }
         const userData = JSON.parse(localStorage.getItem('user'))
-        
-        context.commit('login', { token, userData })
+         
+        context.commit('login', token)
+        context.commit('userUpdateByLogin', userData, { root: true })
+        context.commit('reg', token)
+        context.commit('userUpdateByReg', userData, { root: true })
       }
 
     }

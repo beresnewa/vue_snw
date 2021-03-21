@@ -2,39 +2,67 @@
     <div class="profile">
         <div class="wrapper">
             <div class="avatar">
-                <img src="/static/images/avatar.jpeg"/>
+                <img :src="avatar[0]"/>
             </div>
             <div class="wrapperInfo">
                 <div class="wrap">
-                    <div class="userName">  </div>
-                    <button class="buttonEdit">Редактировать профиль</button>
+                    <div class="userName">{{ user.name }}</div>
+                    <router-link to="/upload" class="buttonEdit">Редактировать профиль</router-link>
                 </div>
                 <div class="buttons">
-                    <button>Публикации</button>
-                    <button>
-                        <router-link to="/teams">Подписчики</router-link>
-                    </button>
-                    <button>Подписки</button>
+                    <div class="count">
+                        <span>{{ images.length }}</span>
+                        <span>Публикации</span>
+                    </div>
+                    <div class="count">
+                        <span>{{ followers.length }}</span>
+                        <button @click="openModalFollowers()">Подписчики</button>
+                    </div>
+                    <div class="count">
+                        <span>{{ subscriptions.length }}</span>
+                        <button @click="openModalSubscriptions()">Подписки</button>
+                    </div>
                 </div>
             </div>
+            <followers v-if="modalFollowers" />
+            <subscriptions v-if="modalSubscriptions" />
+
         </div>
-        <div class="userPublications">
-            <!-- <div>Публикации</div> -->
-            <div class="wrapperPhoto">
-                <img src="/static/images/IMG_1973.jpeg"/>
-                <img src="/static/images/IMG_1974.jpeg"/>
-                <img src="/static/images/IMG_1975.jpeg"/>
+        <div class="wrapperPhoto">
+            <div class="userPublications">
+                <div v-for="(image, index) in images" :key="index">
+                    <div class="wrapImg">
+                        <img :src="image"/>
+                        <button class="delete" @click="deletePhoto({ indexImage: index })">X</button>
+                    </div>   
+                </div>
             </div>
         </div>
     </div>   
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
+import Followers from '../followers/Followers';
+import Subscriptions from '../followers/Subscriptions';
 
 export default {
+    data() {
+        return {
+            
+        }
+    },
+    components: {
+        Followers,
+        Subscriptions
+    },
     computed: {
-        ...mapGetters("authState", ["user"]),  
+        ...mapGetters(["user", "images", "avatar"]),  
+        ...mapGetters("usersState", ["modalFollowers", "modalSubscriptions", "followers", "subscriptions"]),  
+    },
+    methods: {
+        ...mapActions("usersState", ["openModalFollowers", "openModalSubscriptions"]),
+        ...mapActions("uploadState", ["deletePhoto"])
     }
 }
 
@@ -45,6 +73,7 @@ export default {
         margin-top: 100px;
     }
     .wrapper {
+        z-index: 0;
         margin: 20px;
         display: flex;
         justify-content: center;
@@ -63,6 +92,7 @@ export default {
         display: flex;
         justify-content: center;
         flex-direction: row;
+        align-items: center;
     }
     .buttonEdit {
         margin-left: 10px;
@@ -83,6 +113,17 @@ export default {
         height: 125px;
         border-radius: 50%;
     }
+    .count {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 10px;
+        padding: 10px;
+    }
+    .count * {
+        font-size: 15px;
+    }
     .buttons{
         list-style-type: none;
         padding: 30px 0px 30px 0px;
@@ -98,19 +139,42 @@ export default {
         padding: 0 10px 0 0px;
     }
 
-    button a {
+     a {
         text-decoration: none;
         color:black;
     }
+
     .wrapperPhoto{
-        margin: 20px;
         display: flex;
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
+    }
+    .userPublications {
+        display: flex;
         flex-direction: row;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        max-width: 700px;
     }
     .userPublications img {
         width: 200px;
         height: 200px;
         padding: 10px;
     }
+    .wrapImg{
+        position: relative;
+    }
+    .delete{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        outline: none;
+        border: 0;
+        color: black;
+        background: rgba(0, 0, 0, 0);
+        
+    }
+    
 </style>

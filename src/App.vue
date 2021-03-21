@@ -20,7 +20,7 @@ export default {
     ...mapGetters("authState", ["auth"]),
   },
   methods: {
-    ...mapActions("authState", ["autologin"])
+    ...mapActions("authState", ["autologin"]),
   },
   created() {
     this.autologin()

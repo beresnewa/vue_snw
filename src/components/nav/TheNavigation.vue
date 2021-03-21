@@ -2,7 +2,8 @@
   <header>
     <nav>
       <ul>
-        <li v-if="auth">
+        <li v-if="token">
+          <router-link to="/users">Users</router-link>
           <router-link to="/profile">Profile</router-link>
           <a @click="logout()" to="/login">Logout</a>
         </li>
@@ -20,10 +21,10 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   computed: {
-    ...mapGetters("authState", ["auth"]),
+    ...mapGetters("authState", ["token"]),
   },
   methods: {
-    ...mapActions("authState", ["logout", "login"]),
+    ...mapActions("authState", ["logout"]),
   }
 };
 </script>
