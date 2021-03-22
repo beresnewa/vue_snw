@@ -1,17 +1,6 @@
 
 export default {
     namespaced: true,
-    state() {
-        return {
-            
-        }
-    },
-    mutations: {
-
-    },
-    getters: {
-        
-    },
     actions: {
         async uploadPhoto(context, payload) {
             let formData = new FormData();
@@ -28,7 +17,7 @@ export default {
                 const userString = JSON.stringify(response.data.user)
                 localStorage.setItem('user', userString)
                 alert('SUCCESS')
-                context.commit('userUpdateByUpload', userData, { root: true })
+                context.commit('updateUser', userData, { root: true })
                 
             } catch(error) {
                 alert(`FAILURE ${error}`);
@@ -49,7 +38,7 @@ export default {
                 const userString = JSON.stringify(response.data.user)
                 localStorage.setItem('user', userString)
                 alert('SUCCESS')
-                context.commit('userUpdateByUpload', userData, { root: true })
+                context.commit('updateUser', userData, { root: true })
                 
             } catch(error) {
                 alert(`FAILURE ${error}`);
@@ -63,7 +52,7 @@ export default {
                 const userString = JSON.stringify(response.data.user)
                 localStorage.setItem('user', userString)
                 
-                context.commit('userUpdateBydeletePhoto', userData, { root: true })
+                context.commit('updateUser', userData, { root: true })
             } catch(error) {
                 alert(`FAILURE ${error}`);
             }

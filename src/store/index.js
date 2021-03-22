@@ -16,19 +16,7 @@ export default createStore({
         }
     },
     mutations: {
-        userUpdateByLogin(state, userData){
-            state.user = userData
-        },
-        userUpdateByReg(state, userData){
-            state.user = userData
-        },
-        userUpdateByUpload(state, userData){
-            state.user = userData
-        },
-        userUpdateBydeletePhoto(state, userData) {
-            state.user = userData
-        },
-        userUpdateByAddFollowers(state, userData) {
+        updateUser(state, userData) {
             state.user = userData
         }
     },
@@ -42,7 +30,6 @@ export default createStore({
         avatar(state) {
             return state.user.avatars
         },
-
     }
 })
 

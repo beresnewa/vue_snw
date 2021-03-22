@@ -2,14 +2,22 @@
   <div class="modalWrap">
     <div class="modal">
       <div class="modal-header">
-        <h3 class="modal-title">Подписки</h3>
+        <h3 class="modal-title">Вы подписаны</h3>
         <button class="close" @click="closeModalSubscriptions()">X</button>
       </div>
-      <div v-for="(subscription, index) in subscriptions"
-        :key="subscription._id"
-        :id="index"
-        class="modal-body">
-        {{ subscription.name }}    
+      <div class="modal-body">
+        <div v-for="(subscription, index) in subscriptions"
+          :key="subscription._id"
+          :id="index"
+          class="blockWrap">
+          <div class="avatar" v-for="(avatar, index) in subscription.avatars"
+            :key="index"
+            :id="index">
+            <img :src="avatar"/>
+          </div>
+          {{ subscription.name }}
+          <button @click="deleteSubscrption(subscription._id)">Отписаться</button>    
+        </div>
       </div>
     </div>
   </div>
@@ -21,14 +29,25 @@ export default {
     ...mapGetters("usersState", ["subscriptions"]),   
   },
   methods: {
-    ...mapActions("usersState", ["closeModalSubscriptions", "getFollowers"])
-  },
-  created() {
-    this.getFollowers()
-  },
+    ...mapActions("usersState", ["closeModalSubscriptions", "getFollowers", "deleteSubscrption"])
+  }
 };
 </script>
 <style scoped>
+  .avatar {
+    margin: 20px;
+  }
+  .blockWrap {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    align-items: center;
+  }
+  .avatar img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+  }
   .modalWrap {
     position: fixed;
     background-color: rgba(90, 89, 89, 0.678);
@@ -41,7 +60,7 @@ export default {
   .modal {
     position: absolute;
     z-index: 10;
-    transition: opacity 200ms ease-in; 
+    transition: opacity 200ms ease-in;
     margin: 0;
     padding: 0;
     height: 400px;
@@ -53,6 +72,7 @@ export default {
     border: 1px solid rgba(0,0,0,.2);
     border-radius: .3rem;
     outline: 0;
+    overflow: hidden;
   }  
   .modal-header {
     display: flex;
@@ -60,6 +80,7 @@ export default {
     justify-content: space-between;
     padding: 15px;
     border-bottom: 1px solid #eceeef;
+    height: 60px;
   }
   .modal-title {
     margin-top: 0;
@@ -70,7 +91,8 @@ export default {
   }
   .modal-body {
     padding: 15px;
-    overflow: auto;
+    overflow-y: auto;
+    height: calc(100% - 60px);
   }
   .close {
     cursor: pointer;

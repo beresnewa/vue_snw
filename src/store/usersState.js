@@ -11,13 +11,15 @@ export default {
             filterValue : '',
             sortValue: [],
             subscriptions: [],
-            followers: []
+            followers: [],
+            valueButton: false
         }
     },
     mutations: {
         getUsers(state, { usersData, totalPagesData, currentPage }) {
             if(currentPage === 1) {
                 state.users = usersData
+                console.log(state.users)
                 state.totalPages = totalPagesData  
                 state.page = currentPage
                 state.filterValue = ''
@@ -26,6 +28,7 @@ export default {
                 state.totalPages = totalPagesData  
                 state.page = currentPage
             }
+
             
         },
         getFollowers(state, { subscriptions, followers }) {
@@ -54,6 +57,14 @@ export default {
             if(arrsort) {
                 state.sortValue = arrsort 
             }
+        },
+        addFollowers(state, usersData ) {
+            state.users = usersData
+        },
+
+        deleteSubscrption(state, { subscriptions, users }) {
+            state.subscriptions = subscriptions
+            state.users = users
         }
     },
     getters: {
@@ -86,6 +97,9 @@ export default {
         },
         sortValue(state) {
             return state.sortValue
+        },
+        valueButton(state) {
+            return state.valueButton
         }
     },
     actions: {
@@ -112,12 +126,28 @@ export default {
 
         async addFollowers(context, payload) {
             try {
-                const response = await this.axios.put("users/followers", { followerId: payload })
+                const response = await this.axios.put("users/followers", { id: payload })
                 const userData = response.data.user
                 const userString = JSON.stringify(response.data.user)
                 localStorage.setItem('user', userString)
+                // const usersData = response.data.users
 
-                context.commit('userUpdateByAddFollowers', userData, { root: true })
+                context.commit('updateUser', userData, { root: true })
+                // context.commit('addFollowers', usersData)
+                return context.dispatch('usersState/getUsers')
+            } catch (error) {
+                console.log(error)
+            }
+        },
+
+        async deleteSubscrption(context, payload) {
+            try {
+                const response = await this.axios.post("users/subscription", { id: payload })
+                const userData = response.data.user
+                const subscriptions = response.data.subscriptions
+                const users = response.data.users
+                context.commit('deleteSubscrption', {subscriptions, users})
+                context.commit('updateUser', userData, { root: true })
             } catch (error) {
                 console.log(error)
             }

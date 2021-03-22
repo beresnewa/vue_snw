@@ -49,7 +49,7 @@ export default {
           localStorage.setItem('user', userString)
 
           context.commit('login', token )
-          context.commit('userUpdateByLogin', userData, { root: true })
+          context.commit('updateUser', userData, { root: true })
 
         } catch(error) {
           alert(`неверный пароль ${error}`)
@@ -73,7 +73,7 @@ export default {
           localStorage.setItem('user', userString)
 
           context.commit('reg', token)
-          context.commit('userUpdateByReg', userData, { root: true })
+          context.commit('updateUser', userData, { root: true })
 
         } catch(error) {
           alert(`user already exists ${error}`)
@@ -89,9 +89,9 @@ export default {
         const userData = JSON.parse(localStorage.getItem('user'))
          
         context.commit('login', token)
-        context.commit('userUpdateByLogin', userData, { root: true })
+        context.commit('updateUser', userData, { root: true })
         context.commit('reg', token)
-        context.commit('userUpdateByReg', userData, { root: true })
+        context.commit('updateUser', userData, { root: true })
       }
 
     }

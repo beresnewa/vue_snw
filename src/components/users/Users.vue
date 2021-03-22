@@ -1,36 +1,26 @@
 <template>
   <div class="wrap">
-    <!-- <div class="checkbox"> -->
-      <!-- <div>
-        <input value="british" v-model="valuesSort" type="checkbox" name="british" />
-        <label for="british">Британская</label>
-      </div>
-      <div>
-        <input value="persian" v-model="valuesSort" type="checkbox" name="persian" />
-        <label for="persian">Персидская</label>
-      </div>
-      <div>
-        <input value="another" v-model="valuesSort" type="checkbox" name="another" />
-        <label for="another">Другая</label>
-      </div> -->
-      <!-- <button class="sortBtn" @click="getUsers({ sort: valuesSort, currentPage: 1, currentLimit: limit })">Сортировать</button> -->
-    <!-- </div> -->
-    <div>
+    <div class="sort">
       <input value="age" v-model="valuesSort" name="age" type="checkbox" @change="getUsers({ sort: valuesSort, currentPage: 1, currentLimit: limit })"/>
       <label for="age">Sort by age</label>
     </div>
-    <input type="text" v-model="valueFilter" @change="getUsers({ filter: valueFilter, currentPage: 1, currentLimit: limit, sort: valuesSort })" placeholder="поиск"/>
-    <div v-for="(user, index) in users"
-      :key="user._id"
+    <input type="text" v-model="valueFilter" @change="getUsers({ filter: valueFilter, currentPage: 1, currentLimit: limit, sort: valuesSort })" placeholder="поиск" class="search"/>
+    <div v-for="(userS, index) in users"
+      :key="userS._id"
       :id="index"
       class="blockWrap"> 
-      <div class="avatar">
-        <img src="/static/images/avatar.jpeg"/>
+      <div class="avatar" v-for="(avatar, index) in userS.avatars"
+        :key="index"
+        :id="index">
+        <img :src="avatar"/>
       </div>
-      {{ user.name }}
-      <button @click="addFollowers(user._id)" class="addButton">Подписаться</button>
+      <div class="info">
+        <span>{{ userS.name }}</span>
+        <span>age: {{ userS.age }}</span>
+      </div>
+      <button v-if="userS.followers.includes(user._id)" class="addButton">Вы подписаны</button>
+      <button v-else @click="addFollowers(userS._id)" class="addButton">Подписаться</button>
     </div>
-
     <pagination />
   </div>
 </template>
@@ -43,14 +33,15 @@ export default {
   data() {
     return {
       valueFilter: '',
-      valuesSort: []
+      valuesSort: [],
     }
   },
   components: {
     Pagination
   },
   computed: {
-    ...mapGetters("usersState", ["users", "page", "limit"]),
+    ...mapGetters("usersState", ["users", "page", "limit", "valueButton"]),
+    ...mapGetters(["user"]),
   },
   methods: {
     ...mapActions("usersState", ["getUsers", "addFollowers", "getFilteredUsers"]),
@@ -65,16 +56,10 @@ export default {
 </script>
 
 <style scoped>
-  /* .sortBtn {
-    margin-left: 10px;
-    background-color: white;
-    cursor: pointer;
-    outline: none;
-    border: 1px solid rgba(var(--ca6,219,219,219),1);
-    border-radius: 4px;
-    padding: 5px;
-    height: 10px;
-  } */
+  .sort {
+    margin: 10px;
+  }
+
   .checkbox {
     display: flex;
     justify-content: flex-start;
@@ -97,6 +82,7 @@ export default {
     justify-content: center;
     flex-direction: row;
     align-items: center;
+    width: 400px;
   }
   .avatar {
     margin: 20px;
@@ -105,11 +91,7 @@ export default {
     width: 70px;
     height: 70px;
     border-radius: 50%;
-  }
-  button {
-    cursor: pointer;
-    outline: none;
-    padding: 0 10px 0 0px;
+    object-fit: fill;
   }
   .addButton {
     margin-left: 10px;
@@ -120,5 +102,19 @@ export default {
     border-radius: 4px;
     padding: 5px 9px;
     height: 30px;
+    overflow: hidden;
   }
+  .search {
+    height: 25px;
+    width: 200px;
+  }
+  .info {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 100px;
+    margin: 0 20px 0 20px;
+  }
+  
 </style>

@@ -5,11 +5,18 @@
         <h3 class="modal-title">Подписчики</h3>
         <button class="close" @click="closeModalFollowers()">X</button>
       </div>
-      <div v-for="(follower, index) in followers"
-        :key="follower._id"
-        :id="index"
-        class="modal-body">
-        {{ follower.name }}    
+      <div class="modal-body">
+        <div v-for="(follower, index) in followers"
+          :key="follower._id"
+          :id="index"
+          class="blockWrap">
+          <div class="avatar" v-for="(avatar, index) in follower.avatars"
+            :key="index"
+            :id="index">
+            <img :src="avatar"/>
+          </div>
+          {{ follower.name }}    
+        </div>
       </div>
     </div>
   </div>
@@ -22,13 +29,25 @@ export default {
   },
   methods: {
     ...mapActions("usersState", ["closeModalFollowers", "getFollowers"])
-  },
-  created() {
-    this.getFollowers()
-  },
+  }
 };
 </script>
 <style scoped>
+  .avatar {
+    margin: 20px;
+    object-fit:fill;
+  }
+  .blockWrap {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    align-items: center;
+  }
+  .avatar img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+  }
   .modalWrap {
     position: fixed;
     background-color: rgba(90, 89, 89, 0.678);
@@ -41,7 +60,7 @@ export default {
   .modal {
     position: absolute;
     z-index: 10;
-    transition: opacity 200ms ease-in; 
+    transition: opacity 200ms ease-in;
     margin: 0;
     padding: 0;
     height: 400px;
@@ -53,6 +72,7 @@ export default {
     border: 1px solid rgba(0,0,0,.2);
     border-radius: .3rem;
     outline: 0;
+    overflow: hidden;
   }  
   .modal-header {
     display: flex;
@@ -60,6 +80,7 @@ export default {
     justify-content: space-between;
     padding: 15px;
     border-bottom: 1px solid #eceeef;
+    height: 60px;
   }
   .modal-title {
     margin-top: 0;
@@ -70,7 +91,8 @@ export default {
   }
   .modal-body {
     padding: 15px;
-    overflow: auto;
+    overflow-y: auto;
+    height: calc(100% - 60px);
   }
   .close {
     cursor: pointer;

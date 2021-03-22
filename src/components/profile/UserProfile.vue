@@ -61,8 +61,11 @@ export default {
         ...mapGetters("usersState", ["modalFollowers", "modalSubscriptions", "followers", "subscriptions"]),  
     },
     methods: {
-        ...mapActions("usersState", ["openModalFollowers", "openModalSubscriptions"]),
+        ...mapActions("usersState", ["openModalFollowers", "openModalSubscriptions", "getFollowers"]),
         ...mapActions("uploadState", ["deletePhoto"])
+    },
+    created() {
+        this.getFollowers()
     }
 }
 
@@ -112,6 +115,7 @@ export default {
         width: 125px;
         height: 125px;
         border-radius: 50%;
+        object-fit: cover;
     }
     .count {
         display: flex;
@@ -139,7 +143,7 @@ export default {
         padding: 0 10px 0 0px;
     }
 
-     a {
+    a {
         text-decoration: none;
         color:black;
     }
