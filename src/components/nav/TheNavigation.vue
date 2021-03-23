@@ -33,7 +33,9 @@ export default {
 header {
   width: 100%;
   height: 5rem;
-  background-color: #bababb;
+  background: linear-gradient(to bottom, rgba(179,88,239,1) 0%,rgba(81,0,211,1) 49%,rgba(108,0,191,1) 52%,rgba(78,0,147,1) 52%,rgba(224,56,199,1) 100%);
+  box-shadow: 0px 0px 15px 0px rgba(224,56,199,1);
+  color: rgb(255, 255, 255);
 }
 
 nav {
@@ -60,16 +62,17 @@ a {
   background: transparent;
   border: 1px solid transparent;
   cursor: pointer;
-  color: rgb(0, 0, 0);
+  color:white !important;
   padding: 0.5rem 1.5rem;
   display: inline-block;
+  font-size: 18px;
 }
 
 a:hover,
 a:active,
 a.router-link-active {
-  color: #000000;
+  color: white;
   border-color: #080808;
-  background-color: #8e8d92;
+  background-color: #ab9af0e8;
 }
 </style>

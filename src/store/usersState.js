@@ -6,10 +6,11 @@ export default {
             modalFollowers: false,
             modalSubscriptions: false,
             page: 1,
+            nextPage: 2,
             totalPages: 0,
-            limit: 3,
+            limit: 4,
             filterValue : '',
-            sortValue: [],
+            sortValue: '',
             subscriptions: [],
             followers: [],
             valueButton: false
@@ -19,17 +20,16 @@ export default {
         getUsers(state, { usersData, totalPagesData, currentPage }) {
             if(currentPage === 1) {
                 state.users = usersData
-                console.log(state.users)
                 state.totalPages = totalPagesData  
                 state.page = currentPage
+                state.nextPage = currentPage + 1
                 state.filterValue = ''
             } else {
                 state.users.push(...usersData)
                 state.totalPages = totalPagesData  
                 state.page = currentPage
+                state.nextPage = currentPage + 1
             }
-
-            
         },
         getFollowers(state, { subscriptions, followers }) {
             state.subscriptions = subscriptions
@@ -53,19 +53,27 @@ export default {
                 state.filterValue = filter 
             }
         },
-        getSortUsers(state, arrsort ){
-            if(arrsort) {
-                state.sortValue = arrsort 
+        getSortUsers(state, sort ){
+            if(sort) {
+                state.sortValue = sort 
             }
         },
-        addFollowers(state, usersData ) {
-            state.users = usersData
-        },
-
-        deleteSubscrption(state, { subscriptions, users }) {
+        deleteSubscrption(state, { subscriptions, subscription, payload }) {
             state.subscriptions = subscriptions
-            state.users = users
-        }
+            let newUsers = state.users.map(user => {
+                return user._id === payload ? subscription : user
+            });
+            state.users = newUsers
+        },
+        updateUsers(state, { subscription, payload }) {
+            let newUsers = state.users.map(user => {
+                return user._id === payload ? subscription : user
+            });
+            state.users = newUsers
+        },
+        // updateUsersLogout(state) {
+        //     state.users = []
+        // }
     },
     getters: {
         users(state) {
@@ -107,16 +115,15 @@ export default {
             try {
                 const filter = payload.filter
                 const currentLimit = payload.currentLimit
-                const currentPage = payload.currentPage 
-                const arrsort = payload.sort
-                const sort = arrsort.join()
-
+                const currentPage = payload.currentPage
+                const sort = payload.sort
+                
                 const response = await this.axios.get(`users?page=${currentPage}&limit=${currentLimit}&filter=${filter || ''}&sort=${sort || ''}`)
                 const usersData = response.data.users
                 const totalPagesData = response.data.totalPages
                 
                 context.commit('getFilteredUsers', { usersData, filter })
-                context.commit('getSortUsers',  arrsort )   
+                context.commit('getSortUsers', sort )   
                 context.commit('getUsers', { usersData, totalPagesData, currentPage })
                 
             } catch (error) {
@@ -129,12 +136,11 @@ export default {
                 const response = await this.axios.put("users/followers", { id: payload })
                 const userData = response.data.user
                 const userString = JSON.stringify(response.data.user)
+                const subscription = response.data.subscription
                 localStorage.setItem('user', userString)
-                // const usersData = response.data.users
-
                 context.commit('updateUser', userData, { root: true })
-                // context.commit('addFollowers', usersData)
-                return context.dispatch('usersState/getUsers')
+                context.commit('updateUsers', { subscription, payload })
+                
             } catch (error) {
                 console.log(error)
             }
@@ -145,8 +151,8 @@ export default {
                 const response = await this.axios.post("users/subscription", { id: payload })
                 const userData = response.data.user
                 const subscriptions = response.data.subscriptions
-                const users = response.data.users
-                context.commit('deleteSubscrption', {subscriptions, users})
+                const subscription = response.data.subscription
+                context.commit('deleteSubscrption', { subscriptions, subscription, payload })
                 context.commit('updateUser', userData, { root: true })
             } catch (error) {
                 console.log(error)

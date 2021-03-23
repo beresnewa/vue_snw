@@ -1,5 +1,6 @@
 <template>
-    <section class="upload" :style="image">
+    <section>
+        <div :style="image" class="background"></div>
         <div class="wrap">
             <h1>Upload file</h1>
             <form @submit.prevent="uploadPhoto(file)" enctype="multipart/form-data">
@@ -40,21 +41,34 @@ export default {
 </script>
 
 <style scoped>
-    .upload {
-        height: 90vh;
+    .background {
+        height: 100vh;
+        width: 100vw;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         background-position-y: bottom;
+        filter: blur(2px);
     }
     .wrap h1 {
         text-align: center;
     }
     .wrap {
-        height: 220px;
-        background-color: white;
-        margin-top: 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 300px;
+        width: 400px;
+        background-color: rgb(255, 255, 255);
+        padding: 20px;
+        box-shadow:0 0 10px rgba(82, 81, 81, 0.712);
+        /* backdrop-filter: blur(10px); */
     }
     
 </style>

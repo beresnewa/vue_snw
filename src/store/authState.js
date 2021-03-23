@@ -60,6 +60,7 @@ export default {
         localStorage.removeItem('token')
         localStorage.removeItem('user')
         context.commit("logout")
+        context.commit("updateUser", {}, { root: true })
       },
 
       async reg(context, payload) {
@@ -89,7 +90,6 @@ export default {
         const userData = JSON.parse(localStorage.getItem('user'))
          
         context.commit('login', token)
-        context.commit('updateUser', userData, { root: true })
         context.commit('reg', token)
         context.commit('updateUser', userData, { root: true })
       }

@@ -7,6 +7,7 @@ import Reg from "../components/registr/Reg.vue";
 import Users from '../components/users/Users.vue';
 import Followers from '../components/followers/Followers.vue';
 import Upload from '../components/upload/Upload.vue';
+import FollowerProfile from '../components/users/FollowerProfile.vue';
 
 
 const routes = [
@@ -23,14 +24,12 @@ const routes = [
     path: "/login",
     meta: { needsAuth: false},
     component: Auth,
-    
   },
   {
     name: "profile",
     path: "/profile",
     meta: { needsAuth: true},
     component: UserProfile,
-    
   },
   {
     name: "registration",
@@ -43,20 +42,24 @@ const routes = [
     path: "/users",
     meta: { needsAuth: true},
     component: Users,
-    
   },
   {
     name: "followers",
     path: "/followers",
     meta: { needsAuth: true},
     component: Followers,
-    
   },
   {
     name: "upload",
     path: "/upload",
     meta: { needsAuth: true},
     component: Upload,
+  },
+  {
+    name: "followerProfile",
+    path: "/followerProfile",
+    meta: { needsAuth: true},
+    component: FollowerProfile,
   },
 
 ];

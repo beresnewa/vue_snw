@@ -4,22 +4,22 @@
       <input value="age" v-model="valuesSort" name="age" type="checkbox" @change="getUsers({ sort: valuesSort, currentPage: 1, currentLimit: limit })"/>
       <label for="age">Sort by age</label>
     </div>
-    <input type="text" v-model="valueFilter" @change="getUsers({ filter: valueFilter, currentPage: 1, currentLimit: limit, sort: valuesSort })" placeholder="поиск" class="search"/>
-    <div v-for="(userS, index) in users"
-      :key="userS._id"
+    <input type="text" v-model="valueFilter" @change="getUsers({ filter: valueFilter, currentPage: 1, currentLimit: limit, sort: valuesSort.join() })" placeholder="поиск" class="search"/>
+    <div v-for="(userFromUsers, index) in users"
+      :key="userFromUsers._id"
       :id="index"
       class="blockWrap"> 
-      <div class="avatar" v-for="(avatar, index) in userS.avatars"
+      <div class="avatar" v-for="(avatar, index) in userFromUsers.avatars"
         :key="index"
         :id="index">
-        <img :src="avatar"/>
+        <router-link to="/followerProfile"><img :src="avatar" @click="getUserId(userFromUsers._id)"/></router-link>
       </div>
       <div class="info">
-        <span>{{ userS.name }}</span>
-        <span>age: {{ userS.age }}</span>
+        <span>{{ userFromUsers.name }}</span>
+        <span>age: {{ userFromUsers.age }}</span>
       </div>
-      <button v-if="userS.followers.includes(user._id)" class="addButton">Вы подписаны</button>
-      <button v-else @click="addFollowers(userS._id)" class="addButton">Подписаться</button>
+      <button v-if="userFromUsers.followers.includes(user._id)" class="addButton active">Subscribed</button>
+      <button v-else @click="addFollowers(userFromUsers._id)" class="addButton">Subscribe</button>
     </div>
     <pagination />
   </div>
@@ -45,10 +45,11 @@ export default {
   },
   methods: {
     ...mapActions("usersState", ["getUsers", "addFollowers", "getFilteredUsers"]),
+    ...mapActions("followerState", ["getUserId"])
   },
   created() {
     if(this.users.length === 0 ){
-      this.getUsers({ currentPage: this.page, currentLimit: this.limit, sort: this.valuesSort })
+      this.getUsers({ currentPage: 1, currentLimit: this.limit, sort: this.valuesSort })
     }
     
   },
@@ -59,7 +60,6 @@ export default {
   .sort {
     margin: 10px;
   }
-
   .checkbox {
     display: flex;
     justify-content: flex-start;
@@ -100,9 +100,10 @@ export default {
     outline: none;
     border: 1px solid rgba(var(--ca6,219,219,219),1);
     border-radius: 4px;
-    padding: 5px 9px;
+    padding: 5px 5px;
     height: 30px;
     overflow: hidden;
+    width: 120px;
   }
   .search {
     height: 25px;
@@ -115,6 +116,9 @@ export default {
     align-items: center;
     width: 100px;
     margin: 0 20px 0 20px;
+  }
+  .addButton.active {
+    box-shadow:  0px 0px 6px 0px rgb(0 0 255 / 44%) inset;
   }
   
 </style>

@@ -3,12 +3,14 @@ import { createStore } from 'vuex';
 import authState from './authState';
 import usersState from './usersState';
 import uploadState from './uploadState';
+import followerState from './followerState';
 
 export default createStore({
     modules: {
         authState,
         usersState,
-        uploadState
+        uploadState,
+        followerState
     },
     state() {
         return {
@@ -25,10 +27,18 @@ export default createStore({
             return state.user
         },
         images(state) {
-            return state.user.images
+            if(state.user.images) {
+                return state.user.images
+            } else {
+                return []
+            }
         },
         avatar(state) {
-            return state.user.avatars
+            if(state.user.avatars) {
+                return state.user.avatars
+            } else {
+                return []
+            }
         },
     }
 })

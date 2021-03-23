@@ -15,7 +15,7 @@
             :id="index">
             <img :src="avatar"/>
           </div>
-          {{ subscription.name }}
+          <span>{{ subscription.name }}</span>
           <button @click="deleteSubscrption(subscription._id)">Отписаться</button>    
         </div>
       </div>
@@ -39,9 +39,11 @@ export default {
   }
   .blockWrap {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     flex-direction: row;
     align-items: center;
+    width: 300px;
+    margin: 0;
   }
   .avatar img {
     width: 70px;
@@ -97,5 +99,14 @@ export default {
   .close {
     cursor: pointer;
     border: 1px solid rgba(var(--ca6,219,219,219),1);
+  }
+  button {
+    margin-left: 10px;
+    background-color: white;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid rgba(var(--ca6,219,219,219),1);
+    border-radius: 4px;
+    padding: 5px 9px;
   }
 </style>

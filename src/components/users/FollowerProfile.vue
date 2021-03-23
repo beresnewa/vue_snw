@@ -1,42 +1,36 @@
 <template>
-    <div class="profile">
+    <div v-if="isLoading" class="loader">Loading...</div>
+    <div v-else class="profile">
         <div class="wrapper">
             <div class="avatar">
-                <img :src="avatar[0]"/>
+                <img :src="followerAvatar[0]"/>
             </div>
             <div class="wrapperInfo">
                 <div class="wrap">
-                    <div class="info">
-                        <div class="userName">{{ user.name }}</div>
-                        <div>Age: {{ user.age }}</div>
-                    </div>
-                    <router-link to="/upload" class="buttonEdit">Edit profile</router-link>
+                    <div class="userName">{{ follower.name }}</div>
+                    <div>Age: {{ follower.age}}</div>
                 </div>
                 <div class="buttons">
                     <div class="count">
-                        <span>{{ images.length }}</span>
+                        <span>{{ followerImagesLength }}</span>
                         <span>Publications</span>
                     </div>
                     <div class="count">
-                        <span>{{ followers.length }}</span>
-                        <button @click="openModalFollowers()">Followers</button>
+                        <span>{{ followerFollowersLength }}</span>
+                        <span>Followers</span>
                     </div>
                     <div class="count">
-                        <span>{{ subscriptions.length }}</span>
-                        <button @click="openModalSubscriptions()">Subscriptions</button>
+                        <span>{{ followerSubscriptionsLength }}</span>
+                        <span>Subscriptions</span>
                     </div>
                 </div>
             </div>
-            <followers v-if="modalFollowers" />
-            <subscriptions v-if="modalSubscriptions" />
-
         </div>
         <div class="wrapperPhoto">
             <div class="userPublications">
-                <div v-for="(image, index) in images" :key="index">
+                <div v-for="(image, index) in followerImages" :key="index">
                     <div class="wrapImg">
                         <img :src="image"/>
-                        <button class="delete" @click="deletePhoto({ indexImage: index })">X</button>
                     </div>   
                 </div>
             </div>
@@ -46,8 +40,6 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import Followers from '../followers/Followers';
-import Subscriptions from '../followers/Subscriptions';
 
 export default {
     data() {
@@ -55,26 +47,27 @@ export default {
             
         }
     },
-    components: {
-        Followers,
-        Subscriptions
-    },
     computed: {
-        ...mapGetters(["user", "images", "avatar"]),  
-        ...mapGetters("usersState", ["modalFollowers", "modalSubscriptions", "followers", "subscriptions"]),  
+        ...mapGetters("followerState", ["isLoading", "follower", "followerImages", "followerImagesLength", "followerAvatar", "followerSubscriptionsLength", "followerFollowersLength"]),  
     },
     methods: {
-        ...mapActions("usersState", ["openModalFollowers", "openModalSubscriptions", "getFollowers"]),
-        ...mapActions("uploadState", ["deletePhoto"])
+        ...mapActions("followerState", ["getFollower"]),
+        
     },
     created() {
-        this.getFollowers()
+        this.getFollower()
     }
 }
-
 </script>
 
 <style scoped>
+    .loader {
+        margin-top: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+    }
     .profile {
         margin-top: 100px;
     }
@@ -96,16 +89,9 @@ export default {
     }
     .wrap {
         display: flex;
-        justify-content: center;
-        flex-direction: row;
-        align-items: center;
-    }
-    .info {
-        display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         flex-direction: column;
-        align-items: center;
-        margin-top: 10px;
+        padding: 10px;
     }
     .buttonEdit {
         margin-left: 10px;
@@ -135,7 +121,7 @@ export default {
     }
     .buttons{
         list-style-type: none;
-        padding: 30px 0px 30px 0px;
+        padding: 20px 0px 20px 0px;
         display: flex;
         justify-content: start;
         flex-direction: row;
