@@ -4,7 +4,7 @@
       <input value="age" v-model="valuesSort" name="age" type="checkbox" @change="getUsers({ sort: valuesSort, currentPage: 1, currentLimit: limit })"/>
       <label for="age">Sort by age</label>
     </div>
-    <input type="text" v-model="valueFilter" @change="getUsers({ filter: valueFilter, currentPage: 1, currentLimit: limit, sort: valuesSort.join() })" placeholder="поиск" class="search"/>
+    <input type="text" v-model="valueFilter" @change="getUsers({ filter: valueFilter, currentPage: 1, currentLimit: limit, sort: valuesSort.join() })" placeholder="search" class="search"/>
     <div v-for="(userFromUsers, index) in users"
       :key="userFromUsers._id"
       :id="index"
